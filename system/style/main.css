@@ -1,0 +1,55 @@
+html, body{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	font-family: "Open Sans",Helvetica, Arial, sans-serif;
+	background-image: -webkit-radial-gradient(center center, circle cover, #fff 0%, #bbb 100%);
+	background-image: -moz-radial-gradient(center center, circle cover, #fff 0%, #bbb 100%);
+	overflow: hidden;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+.step {
+    position: relative;
+    width: 1000px;
+    padding: 40px;
+    margin: 20px auto;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    -ms-box-sizing:     border-box;
+    -o-box-sizing:      border-box;
+    box-sizing:         border-box;
+
+    font-size: 30px;
+}
+.step strong{
+	font-size: 40px;
+	font-weight: bolder;
+	white-space: nowrap;
+}
+.slide p {
+    display: block;
+    font-size: 30px;
+	text-align: justify;
+}
+.slide pre{
+	font-size: 25px;
+	tab-size: 4;
+	font-weight: lighter;
+	margin-bottom: 0px;
+}
+.slide br{
+	height:0px;
+	line-height: 25px;
+}
+.slide ul li{
+	text-align: justify;
+}

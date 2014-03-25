@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Exception Handling</title>
+	<link rel="stylesheet" href="system/style/main.css">
+	<link rel="icon" type="image/png" href="system/images/favicon.png">
+</head>
+<body class="impress-not-supported">
+	<div id="impress">
+		<div id="bored" class="step slide" data-x="-1366" data-y="-768">
+			<p>
+					<center>
+					<strong style="font-size:58px;margin-top:40px;">Exception Handling</strong>
+				</center>
+				<ul style="position:relative;top:160px;float:right;margin-left:50px;margin-top:150px;color:#555;font-size:24px;">
+					<li>Kuber Sodari</li>
+					<li>Nishan Bajracharya</li>
+					<li>Nootan Ghimire</li>
+					<li>Shashi Khanal</li>
+				</ul>
+				</center>
+			</p>
+		</div>
+		<div class="step slide" data-x="0" data-y="-768">
+			<p>
+				<strong>Exception Handling</strong>
+				<ul>
+					<li>Exception or exceptions may refer to an action that is not part of ordinary operations or standards (Wikipedia)</li>
+					<li>In programming, exceptions are anomalous or exceptional events requiring special processing, eg: Divide By Zero, Out of Memory, etc.</li>
+				</ul><br>
+				<strong>Exception Handling Constructs</strong>
+				<ul>
+					<li>try : Try to do something exceptional</li>
+					<li>throw : Throw an object to catch</li>
+					<li>catch : Catch and handle thrown exception</li>
+				</ul>
+			</p>
+		</div>
+		<div class="step slide" data-x="1366" data-y="-768">
+			<p>
+				<strong>The Code</strong>
+				<pre>
+function1() {
+	if( something_bad_happens ) {
+        throw object1;
+    }
+}
+function2() {
+	try {
+		function1();
+	} catch( type object1 ){
+		//Perform Appropriate Action
+	}
+}
+				</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="1366" data-y="0">
+			<p>
+				<strong>Rethrowing Exceptions</strong><br><br>
+				We catch an exception, do something and then again can re-throw the same. <br><br>The current exception is thrown to the next try/catch sequence and is caught by a catch statement listed after that enclosing try block. <br><br>
+				We can re-throw an exception by simple adding a throw statement without any arguments.
+			</p>
+		</div>
+		<div class="step slide" data-x="0" data-y="0" style="margin-left:-130px;margin-top:-10px;">
+			<p>
+				<!--<strong>The Code</strong>--><br>
+				<pre style="font-size:25px;">
+float divide(float x, float y) {
+		if (y==0) throw D_ZERO();
+		return x/y;
+}
+float evalExpr(float x, float op, float y){
+	float r;
+	if(op=='\'){
+		try{
+			r = divide(x,y);
+		} catch(D_ZERO){
+			cout << "Caught divide by zero inside evalExpr\n";
+			throw; //Cannot handle. Rethrowing
+		}
+	}
+}
+int main(){
+	try {
+		evalExpr(2, '/',0);
+	}catch(D_ZERO){
+		cout << "Caught divide by zero inside main function\n";
+	}
+}
+				</pre>
+				<!--
+				The Output:<br>
+				Caught divide by zero inside evalExpr<br>Caught divide by zero inside main function
+			-->
+			</p>
+		</div>
+		<div class="step slide" data-x="-1366" data-y="0">
+			<p>
+			<strong>Catching Multiple Exceptions</strong><br>
+			It is possible to add multiple catch statements for the same try block as illustrated below:<br>
+			<pre>
+try{
+	//throw something
+}catch(type1 arg1){
+	//catch block 1
+}catch(type2 arg2){
+	//catch block 2
+}
+.
+.
+.
+}catch(typeN argN){
+	//catch block N
+}
+			</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="-1366" data-y="768">
+			<p>
+				<strong>Catching All Exceptions</strong>
+				<br><br>
+				In some cases, though, we may not be able to anticipate all possible types of exceptions and so we need a handler that controls all types of exceptions that may come up within the try block.<br><br>
+				<strong>The Syntax</strong>
+				<br>
+				<pre>
+catch(...){
+	//Handler for all types of exceptions
+}
+				</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="0" data-y="768">
+			<p>
+				<strong>The Code</strong>
+				<pre>
+void check(int x){
+	try{
+		if(x == 0) throw x;
+		if(x == 1) throw 'x';
+	} catch(...){ // Catch All Exceptions
+		cout << "Caught Exception\n";
+	}
+}
+int main(){
+	check(0);
+	check(1);
+}
+				</pre>
+				<strong>The Output</strong><br><br>
+				Caught Exception<br>Caught Exception
+			</p>
+		</div>
+		<div class="step slide" data-x="1366" data-y="768">
+			<p>
+				<strong>Exceptions With Arguments</strong><br><br>
+				It's good practice to create a class corresponding to different types of errors. The objects can then be suitably handled by exception handlers to take necessary actions.<br><br>
+				We throw an object as argument for the exception and initialize the object using the parameterized constructors. When catching, we use the object as the parameters.
+				<pre>
+try{
+	throw Error(1,"Error");	
+}catch(Error Er){
+	//Exception Handling
+}
+
+				</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="1366" data-y="1536" style="margin-left:-120px;">
+			<p>
+				<strong>The Code</strong><br>
+				<pre>
+class Exception{
+	private:
+		int err_code;char *err_desc;
+	public:
+		Exception(int erc,char *erd){
+			err_code = erc;
+			err_desc = new char[strlen(erd)+1];
+			strcpy(err_desc,erd);
+		}
+		void display(){
+			cout << "Error Code : " << err_code << " Description : " << err_desc;
+		}
+};
+int main(){
+	try{
+		throw Exception(404 , "File Not Found");
+	}catch(Exception Err){
+		Err.display();
+	}
+}
+				</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="0" data-y="1536">
+			<p>
+				<strong>Exception Specification</strong>
+				<br>
+				Syntax:
+				<pre>
+return_type func_name(arg_list) throw(type_list)
+{
+	......
+	.... function body part
+	......
+}
+				</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="-1366" data-y="1536">
+		<p>
+			<strong>An Example</strong><br>
+		<pre>
+void take(int x) throw(int,double){
+	if( x==0 ) throw 'x';	// char type as caught by <b>catch</b>
+	else
+	if( x==1 ) throw 'x';	// int type
+	else
+	if( x==-1 ) throw 2.0;	// double type
+	cout << "Here is end of function take()";
+	}
+	int main(){
+		try{
+			cout << "Testing throw restrictions";
+			cout << "x == 0 \n";
+			test(0);
+			cout << "x == 1 \n";
+			test(1);
+			cout << "x == -1 \n";
+			test(-1);
+	//Code Continued...
+	</pre>	
+		</p>
+		</div>
+		<div class="step slide" data-x="-2732" data-y="1536">
+			<p>
+				<strong>Exception Specifications</strong><br>
+				<pre>
+			cout << "x == 2 \n";
+			test(2);
+		}
+		catch(char c)
+		{
+			cout << "Caught a character \n";
+		}
+		catch(int i)
+		{
+			cout << "Caught an integer \n";
+		}
+		catch(double d)
+		{
+			cout << "Caught a double \n";
+		}
+		cout << "End of try_catch system \n\n";
+	return 0;
+	}
+				</pre>	
+			</p>
+
+		</div>
+	<div class="step slide" data-x="-4000" data-y="1536">
+		<p>
+		<strong>Exception Specifications</strong><br>
+		<br>
+		<b>And the O/P would be:</b><br><br>
+		Testing throw restrictions	<br>
+		x == 0 	<br>
+		Caught a character 	<br>
+		End of the try_catch system	<br>
+	</p>
+	</div>
+		<div class="step slide" data-x="-4000" data-y="768">
+			<p>
+				<strong>Exception Specifications</strong><br>
+				<br>
+			<b>Why are exception specifications bad?</b>
+			<br>
+			<ul>
+				<li>	It uses a type system that is inconsistent with the rest of the language ("shadow type system").</li>
+				<li>	The problem is, that if an unexpected exception (one not in the specification) is thrown, then the program will be terminated (by default).
+				<pre>throw(); //empty type_list, no argument or list on throw().	</pre></li>
+				<li>	They are deprecated in the next version of C++ due for standardization problem.</li>
+			</ul>
+			</p>
+		</div>
+		<div class="step slide" data-x="-2732" data-y="768">
+			<p>
+				<strong>Handling Uncaught Exceptions</strong><br><br>
+				<li>exceptions which doesn't find the handler are termed as uncaught exceptions</li><br>
+				<li>if uncaught exceptions are thrown, the standard library function terminate() is called and this by default calls abort() function</li><br>
+				<li>this results to abnormal termination of the program which is absolutely unwelcomed</li><br>
+				<li>by using set_terminate() function, the programmer can define the program's action to be taken to handle such uncaught exception</li>
+			</p>
+		</div>
+		<div class="step slide" data-x="-2732" data-y="0">
+			<p>
+				<strong>The code</strong><br><br>
+				<pre>#include "iostream.h"
+using namespace std;
+const int size=10;
+class LOWRANGE{};
+class HIGHRANGE{};
+class Array{
+private:
+    int arr[size];
+public:
+    Array(){}
+    int check(int x){
+        if (x<0)
+            throw LOWRANGE();
+        else if (x>=size)
+            throw HIGHRANGE();
+        return arr[x];
+    }
+};
+	</pre>
+			</p>
+		</div>
+		<div class="step slide" data-x="-2732" data-y="-768">
+			<p>
+				<strong>code continued...</strong><br><br>
+				<pre>
+void uehandler(){
+    cout<<"Uncaught exception is detected";
+}
+int main(){
+    set_terminate(uehandler);
+    Array a;
+    int index;
+    try{
+        cout<<"Enter array index:"<< endl;
+        cin>>index;
+        a.check(index);
+        cout<< index<<" is within the range"<< endl;
+    }
+    catch(LOWRANGE){
+        cout<<"Exception: index value is less than zero"<< endl;
+    }
+    return 0;
+}
+</pre>
+			</p>
+		</div>
+	<div class="step slide" data-x="-4098" data-y="-768">
+			<p>
+				<strong>code continued...</strong><br><br>
+				<i>Output</i><br>
+				Enter array index:<br>
+				13<br>
+				Uncaught exception is detected
+			</p>
+		</div>
+
+	<div class="step slide" data-x="-4098" data-y="-1500">
+			<p>
+				<strong>Handling Unexpected Exceptions</strong><br><br>
+				<li>those arised exceptions that are not in the exception list are called unexpected expections</li><br>
+				<li>if unexpected exceptions are thrown, the standard library function unexpected() is called which calls terminate() and this by default calls abort()</li><br>
+				<li>by using set_unexcepted() function, the programmer can define the program's action to be taken to handle such unexcepted exception</li>
+			</p>
+		</div>
+
+		<div class="step slide" data-x="-4098" data-y="-2254">
+			<p>
+				<strong>The code</strong><br><br>
+				<pre>#include "iostream"
+using namespace std;
+class DAYERR{};
+class MONTHERR{};
+class YEARERR{};
+void uexphandler(){
+    cout<<"Unexpected exception raised"<<endl;
+}
+class Date{
+private:
+    int day,month,year;
+public:
+    void read_date()throw (DAYERR, MONTHERR);
+    void show_date();
+};
+void Date::read_date() throw (DAYERR, MONTHERR){
+    cout<<"Enter day:"<<endl;
+    cin>>day;
+    if(day>31)
+        throw DAYERR();
+    cout<<"Enter month:"<<endl;
+    cin>>month;
+    if(month>12)
+        throw MONTHERR();
+    cout<<"Enter year:"<<endl;
+    cin>>year;
+    if(year<0)
+        throw YEARERR();
+}</pre>
+			</p>
+		</div>
+
+		<div class="step slide" data-x="-4098" data-y="-3072">
+			<p>
+				<strong>code continued...</strong>
+				<pre style="font-size:20px;">void Date::show_date(){
+    cout << "Date of birth is "<< day<<"/"<< month<<"/"<< year<< endl;
+}
+int main(){
+    Date d;
+    set_unexpected(uexphandler);
+    try{
+        cout<<"Enter your date of birth:"<< endl;
+        d.read_date();
+        d.show_date();
+    }
+    catch(DAYERR){
+        cout<<"Exception: day cannot be greater than 31"<< endl;
+    }
+    catch(MONTHERR){
+        cout<<"Exception: month cannot be greater than 12"<< endl;
+    }
+    catch(YEARERR){
+        cout<<"Exception: year cannot be negative"<< endl;
+    }
+    return 0;
+}
+</pre>
+			</p>
+		</div>
+
+		<div class="step slide" data-x="-4732" data-y="-3868">
+			<p>
+				<strong>Output</strong><br><br>
+				Enter your date of birth:<br>
+				Enter day:<br>
+				12<br>
+				Enter month:<br>
+				4<br>
+				Enter year:<br>
+				-1<br>
+				Unexpected exception raised<br>
+			</p>
+		</div>
+		<div class="step slide" data-x="-4732" data-y="-4732">
+		<center>
+		<strong style="font-size:58px;">
+			Queries?
+		</strong>
+		</center>
+		</div>
+		<div id="overview" class="step" data-x="-683" data-y="384" data-scale="4">
+		</div>
+	</div>
+	<!--
+	<div class="hint">
+		<p>Use a spacebar or arrow keys to navigate</p>
+	</div>-->
+	<script>
+	if ("ontouchstart" in document.documentElement) { 
+		document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+	}
+	</script>
+	
+<script src="system/script/impress.js"></script>
+<script>impress().init();</script>
+</body>
+</html>
